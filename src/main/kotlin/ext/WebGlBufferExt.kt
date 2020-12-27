@@ -13,7 +13,7 @@ import org.khronos.webgl.WebGLRenderingContext as GL
  * Creates and binds buffer to a [program]
  * @return Vertex and fragment buffer
  */
-fun GL.createBuffers(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuffer?> {
+fun GL.createBuffer(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuffer?> {
     val vertexBuffer = createBuffer(this)
     bufferData(GL.ARRAY_BUFFER, Float32Array(buffer.vertices), GL.STATIC_DRAW)
 
@@ -34,7 +34,7 @@ fun GL.createBuffers(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuf
  */
 private fun createBuffer(webGl: GL): WebGLBuffer? {
     val buffer = webGl.createBuffer()
-    webGl.bindBuffer(GL.ARRAY_BUFFER, webGl.createBuffer())
+    webGl.bindBuffer(GL.ARRAY_BUFFER, buffer)
     return buffer
 }
 

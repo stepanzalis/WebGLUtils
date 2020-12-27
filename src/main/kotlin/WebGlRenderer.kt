@@ -36,7 +36,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
             )
 
             val locTime = initUniformLoc(shaderProgram, "time")
-            createBuffers(shaderProgram, buffer)
+            createBuffer(shaderProgram, buffer)
 
             incrementTime()
             uniform1f(locTime, time)
@@ -54,10 +54,10 @@ class WebGlRenderer : BaseWebGlCanvas() {
     }
 
     private fun compileShaderProgram() {
-        val shaders = ShaderProgram.loadShaders(webGl, resourceLoader, "attr_shader")
+        val shaders = ShaderProgram.loadShaders(webGl, resourceLoader, "attr_shader.vert", "attr_shader.frag")
         shaderProgram.attachShaders(webGl, shaders)
         webGl.linkProgram(shaderProgram)
         webGl.useProgram(shaderProgram)
-        shaderProgram.detachShaders(webGl, shaders)
+        // shaderProgram.detachShaders(webGl, shaders)
     }
 }
