@@ -1,3 +1,5 @@
+package p01_triangle
+
 import base.*
 import base.data.WebGlAttribute
 import base.data.WebGlBuffer
@@ -36,7 +38,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
             )
 
             val locTime = initUniformLoc(shaderProgram, "time")
-            createBuffer(shaderProgram, buffer)
+            initBuffer(shaderProgram, buffer)
 
             incrementTime()
             uniform1f(locTime, time)
@@ -58,6 +60,6 @@ class WebGlRenderer : BaseWebGlCanvas() {
         shaderProgram.attachShaders(webGl, shaders)
         webGl.linkProgram(shaderProgram)
         webGl.useProgram(shaderProgram)
-        // shaderProgram.detachShaders(webGl, shaders)
+        shaderProgram.detachShaders(webGl, shaders)
     }
 }

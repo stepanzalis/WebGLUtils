@@ -1,6 +1,7 @@
 package base
 
 import base.data.CanvasInfo
+import exceptions.ResourceNotFoundException
 import exceptions.ShaderNotLoadedException
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -11,9 +12,11 @@ abstract class BaseWebGlCanvas(
     private val canvasWidth: Int = DefaultWidth,
     private val canvasHeight: Int = DefaultHeight
 ) {
-    val resourceLoader by lazy { ResourceLoader() }
+
     private val canvas by lazy { document.getElementById(WebGlCanvasId) as HTMLCanvasElement }
 
+    val resourceLoader by lazy { ResourceLoader() }
+    val objFileLoader: WebGlObjectLoader by lazy { WebGlObjectLoader() }
     val canvasInfo get() = CanvasInfo(canvas.width, canvas.height)
 
     var webGl = canvas.getContext(WebGlContext) as GL
@@ -53,6 +56,15 @@ abstract class BaseWebGlCanvas(
 
     open fun loadResources(resources: Array<String> = emptyArray(), onLoadedResources: () -> Unit) =
         resourceLoader.loadResources(*resources, onLoadedResources = onLoadedResources)
+
+    /**
+     * Helper method for loading obj files to [WebGlObjectLoader]
+     * @throws ResourceNotFoundException when resource is not loaded
+     */
+    fun loadModelObj(resourceName: String) {
+        if (resourceLoader[resourceName] == null) throw ResourceNotFoundException
+        objFileLoader.parseModelFromSource(resourceLoader[resourceName])
+    }
 
     abstract fun setup()
     abstract fun render()

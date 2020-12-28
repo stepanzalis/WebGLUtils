@@ -1,5 +1,7 @@
 package ext
 
+import base.ShaderProgram
+import org.khronos.webgl.Float32Array
 import org.khronos.webgl.WebGLProgram
 import org.khronos.webgl.WebGLRenderingContext
 
@@ -12,4 +14,3 @@ fun WebGLRenderingContext.initViewport(width: Int, height: Int) = viewport(0, 0,
 
 fun WebGLRenderingContext.initUniformLoc(program: WebGLProgram?, name: String) =
     program?.let { getUniformLocation(program, name) }
-

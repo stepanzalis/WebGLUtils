@@ -3,7 +3,7 @@ package base.data
 data class WebGlBuffer(
     val vertices: Array<Float>,
     val attributes: Array<WebGlAttribute>,
-    val indices: Array<Int>
+    val indices: Array<Short>
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

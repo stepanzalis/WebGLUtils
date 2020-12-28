@@ -3,22 +3,19 @@ package ext
 import base.data.WebGlAttribute
 import base.data.WebGlBuffer
 import exceptions.AttributeBindException
-import org.khronos.webgl.Float32Array
-import org.khronos.webgl.Uint32Array
-import org.khronos.webgl.WebGLBuffer
-import org.khronos.webgl.WebGLProgram
+import org.khronos.webgl.*
 import org.khronos.webgl.WebGLRenderingContext as GL
 
 /**
  * Creates and binds buffer to a [program]
  * @return Vertex and fragment buffer
  */
-fun GL.createBuffer(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuffer?> {
-    val vertexBuffer = createBuffer(this)
+fun GL.initBuffer(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuffer?> {
+    val vertexBuffer = initBuffer(this)
     bufferData(GL.ARRAY_BUFFER, Float32Array(buffer.vertices), GL.STATIC_DRAW)
 
-    val indexBuffer = createBuffer(this)
-    bufferData(GL.ELEMENT_ARRAY_BUFFER, Uint32Array(buffer.indices), GL.STATIC_DRAW)
+    val indexBuffer = initBuffer(this, GL.ELEMENT_ARRAY_BUFFER)
+    bufferData(GL.ELEMENT_ARRAY_BUFFER, Uint16Array(buffer.indices), GL.STATIC_DRAW)
 
     // Bind buffers
     bindBuffer(GL.ARRAY_BUFFER, vertexBuffer)
@@ -32,9 +29,9 @@ fun GL.createBuffer(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuff
 /**
  * Create and bind buffer to context
  */
-private fun createBuffer(webGl: GL): WebGLBuffer? {
+private fun initBuffer(webGl: GL, bufferType: Int = GL.ARRAY_BUFFER): WebGLBuffer? {
     val buffer = webGl.createBuffer()
-    webGl.bindBuffer(GL.ARRAY_BUFFER, buffer)
+    webGl.bindBuffer(bufferType, buffer)
     return buffer
 }
 
