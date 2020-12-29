@@ -1,7 +1,5 @@
 package transforms
 
-import transforms.Mat4Identity
-
 /**
  * A 4x4 matrix of right-handed rotation about z-axis
  *

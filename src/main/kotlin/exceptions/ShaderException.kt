@@ -14,6 +14,7 @@ class ShaderNotLoadedException: WebGLException() {
     }
 }
 
+object NotShaderException: WebGLException()
 object ShaderProgramNotCreatedException: WebGLException()
 object NotVertexShaderException: WebGLException()
 object NotFragmentShaderException: WebGLException()

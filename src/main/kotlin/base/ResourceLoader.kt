@@ -7,7 +7,7 @@ class ResourceLoader {
 
     private data class ResourceInfo(
         var loaded: Boolean = false,
-        var code: String? = null
+        var content: String? = null
     )
 
     private val resourceMap: MutableMap<String, ResourceInfo> = HashMap()
@@ -15,16 +15,16 @@ class ResourceLoader {
     fun loadResources(vararg resourceLocations: String, onLoadedResources: () -> Unit) {
         resourceLocations.forEach { location ->
             resourceMap[location] = ResourceInfo()
-            loadProgram(location) {
+            loadResource(location) {
                 resourceMap[location]?.loaded = true
-                resourceMap[location]?.code = it
+                resourceMap[location]?.content = it
             }
             console.log("Loaded resource: $location")
         }
         onLoadedResources.invoke()
     }
 
-    private fun loadProgram(uri: String, loaded: (String) -> Unit) {
+    private fun loadResource(uri: String, loaded: (String) -> Unit) {
         val request = XMLHttpRequest()
         request.open("GET", uri, false)
         request.addEventListener("load", EventListener {
@@ -33,5 +33,5 @@ class ResourceLoader {
         request.send()
     }
 
-    operator fun get(name: String) = resourceMap[name]?.code
+    operator fun get(name: String) = resourceMap[name]?.content
 }

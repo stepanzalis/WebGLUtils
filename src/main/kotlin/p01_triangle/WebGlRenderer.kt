@@ -20,7 +20,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
         }
     }
 
-    private fun draw() {
+    override fun draw() {
         with(webGl) {
             clearColorBuffer()
 
@@ -43,15 +43,14 @@ class WebGlRenderer : BaseWebGlCanvas() {
             incrementTime()
             uniform1f(locTime, time)
 
-            initViewport(canvasInfo.width, canvasInfo.height)
             drawArrays(GL.TRIANGLES, 0, 3)
-
             renderInLoop { draw() }
         }
     }
 
-    override fun render() {
+    override fun render() = with(webGl) {
         compileShaderProgram()
+        initViewport(canvasInfo.width, canvasInfo.height)
         draw()
     }
 

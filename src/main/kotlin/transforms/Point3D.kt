@@ -7,6 +7,7 @@ package transforms
  * @version 2014
  */
 class Point3D {
+
     /**
      * Returns the homogeneous x coordinate
      *

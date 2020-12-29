@@ -5,16 +5,21 @@ import base.data.WebGlAttribute
 import base.data.WebGlBuffer
 import ext.*
 import org.khronos.webgl.*
+import org.w3c.dom.events.EventListener
+import org.w3c.dom.events.KeyboardEvent
 import transforms.*
 import kotlin.math.PI
 import org.khronos.webgl.WebGLRenderingContext as GL
 
 class WebGlRenderer : BaseWebGlCanvas() {
 
-    private var shaderProgram: WebGLProgram? = null
+    private var rotation = 0.0
+    private var rotationSpeed = 0.05
 
+    private var shaderProgram: WebGLProgram? = null
     private val projMat = Mat4PerspRH(PI / 3, 1.0, 0.1, 60.0)
-    var camera: Camera = Camera().withPosition(Vec3D(20.0, 20.0, 20.0))
+    var camera = Camera()
+        .withPosition(Vec3D(20.0, 20.0, 20.0))
         .withAzimuth(PI * 1.25)
         .withZenith(PI * -0.125)
 
@@ -27,14 +32,19 @@ class WebGlRenderer : BaseWebGlCanvas() {
         }
     }
 
-    private var rotation = 0.0
-    private var rotationSpeed = 0.1
+    override val eventListener = EventListener { event ->
+        val e = event as? KeyboardEvent
+        when (e?.key) {
+            "w" -> camera = camera.forward(1.0)
+            "s" -> camera = camera.backward(1.0)
+            "d" -> camera = camera.right(1.0)
+            "a" -> camera = camera.left(1.0)
+        }
+    }
 
-    private fun draw() {
+    override fun draw() {
         with(webGl) {
             clearColorBuffer()
-            initViewport(canvasInfo.width, canvasInfo.height)
-
             rotation -= rotationSpeed
 
             val modMat = Mat4RotY(rotation).mul(Mat4RotX(PI / 2))
@@ -53,6 +63,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
 
         enable(GL.DEPTH_TEST)
         compileShaderProgram()
+        initKeyboardListeners()
 
         val buffer = WebGlBuffer(
             indices = objFileLoader.getFacesArray(),
@@ -64,6 +75,8 @@ class WebGlRenderer : BaseWebGlCanvas() {
         )
 
         initBuffer(shaderProgram, buffer)
+        initViewport(canvasInfo.width, canvasInfo.height)
+
         draw()
     }
 
