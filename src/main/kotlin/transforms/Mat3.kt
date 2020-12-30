@@ -1,5 +1,7 @@
 package transforms
 
+import org.khronos.webgl.Float32Array
+
 /**
  * A 3x3 matrix with common operations, immutable
  *
@@ -267,9 +269,9 @@ open class Mat3 {
      *
      * @return new float array
      */
-    fun floatArray(): FloatArray {
+    fun floatArray(): Float32Array {
         val result = FloatArray(9)
         for (i in 0..2) for (j in 0..2) result[i * 3 + j] = mat[i][j].toFloat()
-        return result
+        return Float32Array(result.toTypedArray())
     }
 }

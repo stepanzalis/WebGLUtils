@@ -16,14 +16,67 @@ fun WebGLProgram?.detachShaders(webGl: WebGLRenderingContext, shaders: List<WebG
     console.log("Detaching shaders from program.")
 
     shaders.forEach { shader ->
-        webGl.detachShader(this, shader)
         if (webGl.isShader(shader)) {
             webGl.detachShader(this, shader)
         }
     }
 }
 
-fun WebGLProgram.bindUniformLocation(GL: WebGLRenderingContext, name: String, array: Float32Array, transpose: Boolean = false) {
+fun WebGLProgram?.useShaders(webGl: WebGLRenderingContext, shaders: List<WebGLShader>) {
+    attachShaders(webGl, shaders)
+    webGl.linkProgram(this)
+    webGl.useProgram(this)
+    detachShaders(webGl, shaders)
+}
+
+fun WebGLProgram.bindUniformMatrix4fv(
+    GL: WebGLRenderingContext,
+    name: String,
+    array: Float32Array,
+    transpose: Boolean = false
+) {
     val matrixUniform = GL.getUniformLocation(this, name)
     GL.uniformMatrix4fv(matrixUniform, transpose, array)
+}
+
+fun WebGLProgram.bindUniformMatrix3fv(
+    GL: WebGLRenderingContext,
+    name: String,
+    array: Array<Float>,
+    transpose: Boolean = false
+) {
+    val loc = GL.getUniformLocation(this, name)
+    GL.uniformMatrix3fv(loc, transpose, array)
+}
+
+fun WebGLProgram.bindUniformMatrix3fv(
+    GL: WebGLRenderingContext,
+    name: String,
+    array: Float32Array,
+    transpose: Boolean = false
+) {
+    val loc = GL.getUniformLocation(this, name)
+    GL.uniformMatrix3fv(loc, transpose, array)
+}
+
+fun WebGLProgram.bindUniform3fv(GL: WebGLRenderingContext, name: String, array: Array<Float>) {
+    val loc = GL.getUniformLocation(this, name)
+    GL.uniform3fv(loc, array)
+}
+
+fun WebGLProgram.bindUniform3fv(GL: WebGLRenderingContext, uniforms: List<Pair<String, Array<Float>>>) {
+    uniforms.forEach {
+        val loc = GL.getUniformLocation(this, it.first)
+        GL.uniform3fv(loc, it.second)
+    }
+}
+
+fun WebGLProgram.bindUniform2fv(GL: WebGLRenderingContext, name: String, array: Array<Float>) {
+    val loc = GL.getUniformLocation(this, name)
+    GL.uniform2fv(loc, array)
+}
+
+fun WebGLProgram.bindUniformValue1f(GL: WebGLRenderingContext, name: String, value: Float) {
+    val loc = GL.getUniformLocation(this, name)
+    GL.uniform1f(loc, value)
 }

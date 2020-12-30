@@ -11,7 +11,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
 
     private var shaderProgram: WebGLProgram? = null
 
-    override fun setup() {
+    override fun setupResources() {
         shaderProgram = webGl.createProgram()
 
         val resources = arrayOf("attr_shader.vert", "attr_shader.frag")
