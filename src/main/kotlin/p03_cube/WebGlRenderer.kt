@@ -15,7 +15,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
 
     private var rotation = .0
 
-    private val cube by lazy { CubeDTO() }
+    private val cube by lazy { CubeGeometry() }
     private var shaderProgram: WebGLProgram? = null
 
     private val projMat = Mat4PerspRH(PI / 4, 1.0, 0.01, 60.0)

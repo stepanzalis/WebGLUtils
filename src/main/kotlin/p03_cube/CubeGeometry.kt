@@ -1,8 +1,8 @@
 package p03_cube
 
-import base.data.GeometryDTO
+import base.data.GeometryObject
 
-class CubeDTO : GeometryDTO(
+class CubeGeometry : GeometryObject(
     indices = arrayOf(
         0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7,
         8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
