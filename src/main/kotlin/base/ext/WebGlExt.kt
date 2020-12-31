@@ -2,6 +2,7 @@ package base.ext
 
 import org.khronos.webgl.*
 import org.khronos.webgl.WebGLRenderingContext.Companion.LINEAR
+import org.khronos.webgl.WebGLRenderingContext.Companion.LINEAR_MIPMAP_LINEAR
 import org.khronos.webgl.WebGLRenderingContext.Companion.RGBA
 import org.khronos.webgl.WebGLRenderingContext.Companion.TEXTURE_2D
 import org.khronos.webgl.WebGLRenderingContext.Companion.TEXTURE_MAG_FILTER
@@ -25,7 +26,10 @@ fun WebGLRenderingContext.initUniformLoc(program: WebGLProgram?, name: String) =
  *
  * FIXME: Another way is to create 1px color texture and load it immediately without callback and then put it to texture
  */
-fun WebGLRenderingContext.loadImageTexture(url: String, onTextureLoaded: (texture: WebGLTexture?) -> Unit): WebGLTexture? {
+fun WebGLRenderingContext.loadImageTexture(
+    url: String,
+    onTextureLoaded: (texture: WebGLTexture?) -> Unit
+): WebGLTexture? {
     val image = Image()
     val texture = createTexture()
 
@@ -41,6 +45,7 @@ fun WebGLRenderingContext.loadImageTexture(url: String, onTextureLoaded: (textur
             TEXTURE_2D, 0, RGBA,
             RGBA, UNSIGNED_BYTE, image
         )
+
         onTextureLoaded.invoke(texture)
     }
 
