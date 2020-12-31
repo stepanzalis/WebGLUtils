@@ -17,6 +17,12 @@ fun GL.initBuffer(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuffer
     val indexBuffer = initBuffer(this, GL.ELEMENT_ARRAY_BUFFER)
     bufferData(GL.ELEMENT_ARRAY_BUFFER, Uint16Array(buffer.indices), GL.STATIC_DRAW)
 
+    buffer.colors?.let {
+        val colorBuffer = initBuffer(this, GL.ELEMENT_ARRAY_BUFFER)
+        bufferData(GL.ELEMENT_ARRAY_BUFFER, Float32Array(buffer.colors), GL.STATIC_DRAW)
+        bindBuffer(GL.ELEMENT_ARRAY_BUFFER, colorBuffer)
+    }
+
     // Bind buffers
     bindBuffer(GL.ARRAY_BUFFER, vertexBuffer)
     bindBuffer(GL.ELEMENT_ARRAY_BUFFER, indexBuffer)

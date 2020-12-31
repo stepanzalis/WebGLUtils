@@ -3,8 +3,9 @@ package base.data
 data class WebGlBuffer(
     val vertices: Array<Float>,
     val attributes: Array<WebGlAttribute>,
-    val indices: Array<Short>
-) {
+    val indices: Array<Short>,
+    val colors: Array<Float>? = null,
+    ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || this::class.js != other::class.js) return false
@@ -25,10 +26,3 @@ data class WebGlBuffer(
         return result
     }
 }
-
-data class WebGlAttribute(
-    val name: String,
-    val dimension: Int,
-    val stride: Int = 0,
-    val offset: Int = 0,
-)

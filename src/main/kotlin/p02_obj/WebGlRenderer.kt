@@ -60,7 +60,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
     override fun setupResources() {
         shaderProgram = webGl.createProgram()
 
-        val resources = arrayOf("obj-vertex-shader.vert", "obj-frag-shader.frag", "teapot.obj")
+        val resources = arrayOf("obj_shader.vert", "obj_shader.frag", "teapot.obj")
         loadResources(resources) {
             render()
         }
@@ -99,11 +99,16 @@ class WebGlRenderer : BaseWebGlCanvas() {
 
             shaderProgram?.bindUniformValue1f(webGl, "uShininess", shininess)
             shaderProgram?.bindUniform3fv(webGl, "uLightPos", lightPos)
-
             shaderProgram?.bindUniformMatrix3fv(webGl, "uNMatrix", norMat.floatArray())
-            shaderProgram?.bindUniformMatrix4fv(webGl, "uPMatrix", projMat.floatArray())
-            shaderProgram?.bindUniformMatrix4fv(webGl, "uVMatrix", camera.viewMatrix.floatArray())
-            shaderProgram?.bindUniformMatrix4fv(webGl, "uMMatrix", modMat.floatArray())
+
+            shaderProgram?.bindUniformMatrix4fv(
+                webGl,
+                listOf(
+                    "uPMatrix" to projMat.floatArray(),
+                    "uVMatrix" to camera.viewMatrix.floatArray(),
+                    "uMMatrix" to modMat.floatArray()
+                )
+            )
 
             drawElements(GL.TRIANGLES, objFileLoader.getNumFaces() * 3, GL.UNSIGNED_SHORT, 0)
             renderInLoop { draw() }
@@ -126,10 +131,10 @@ class WebGlRenderer : BaseWebGlCanvas() {
         shaderProgram?.bindUniform3fv(
             webGl,
             listOf(
-                Pair("uLightPos", lightPos),
-                Pair("uAmbientColor", ambientColor),
-                Pair("uDiffuseColor", diffuseColor),
-                Pair("uSpecularColor", specularColor)
+                "uLightPos" to lightPos,
+                "uAmbientColor" to ambientColor,
+                "uDiffuseColor" to diffuseColor,
+                "uSpecularColor" to specularColor
             )
         )
 
@@ -152,8 +157,8 @@ class WebGlRenderer : BaseWebGlCanvas() {
         val shaders = ShaderProgram.loadShaders(
             webGl,
             resourceLoader,
-            vertexShaderRes = "obj-vertex-shader.vert",
-            fragmentShaderRes = "obj-frag-shader.frag"
+            vertexShaderRes = "obj_shader.vert",
+            fragmentShaderRes = "obj_shader.frag"
         )
 
         shaderProgram.useShaders(webGl, shaders)

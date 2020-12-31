@@ -39,6 +39,14 @@ fun WebGLProgram.bindUniformMatrix4fv(
     GL.uniformMatrix4fv(matrixUniform, transpose, array)
 }
 
+fun WebGLProgram.bindUniformMatrix4fv(
+    GL: WebGLRenderingContext,
+    uniforms: List<Pair<String, Float32Array>>,
+    transpose: Boolean = false
+) {
+    uniforms.forEach { bindUniformMatrix4fv(GL, it.first, it.second, transpose) }
+}
+
 fun WebGLProgram.bindUniformMatrix3fv(
     GL: WebGLRenderingContext,
     name: String,

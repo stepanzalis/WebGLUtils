@@ -1,5 +1,6 @@
 package base.data
 
+// TODO
 data class Point(val x: Float, val y: Float, val z: Float, val color: Color) {
     constructor(x: Number, y: Number, z: Number) :
             this(x.toFloat(), y.toFloat(), z.toFloat(), Color.randomColor())

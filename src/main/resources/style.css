@@ -1,3 +1,7 @@
+h2, p, input, label {
+    font-family: 'Open Sans', sans-serif;
+}
+
 div {
     columns: 1;
     margin: 10px;
