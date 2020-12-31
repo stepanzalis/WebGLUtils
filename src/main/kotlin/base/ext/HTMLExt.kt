@@ -1,4 +1,4 @@
-package ext
+package base.ext
 
 import base.BaseWebGlCanvas
 import org.w3c.dom.HTMLButtonElement

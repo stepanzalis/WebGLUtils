@@ -4,6 +4,8 @@ data class WebGlBuffer(
     val vertices: Array<Float>,
     val attributes: Array<WebGlAttribute>,
     val indices: Array<Short>,
+    val textureCoord: Array<Float>? = null,
+    val normals: Array<Float>? = null,
     val colors: Array<Float>? = null,
     ) {
     override fun equals(other: Any?): Boolean {

@@ -1,12 +1,9 @@
-package p03_cube
+package p04_texture_cube
 
-import CubeGeometry
 import base.*
 import base.data.WebGlAttribute
 import base.data.WebGlBuffer
-import base.ext.clearColorBuffer
-import base.ext.initBuffer
-import base.ext.initViewport
+import base.ext.*
 import ext.*
 import org.khronos.webgl.*
 import org.w3c.dom.events.EventListener
@@ -32,7 +29,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
     override fun setupResources() {
         shaderProgram = webGl.createProgram()
 
-        val resources = arrayOf("cube_shader.vert", "cube_shader.frag")
+        val resources = arrayOf("$ShaderProgramName.vert", "$ShaderProgramName.frag")
         loadResources(resources) {
             render()
         }
@@ -62,7 +59,6 @@ class WebGlRenderer : BaseWebGlCanvas() {
             clearColorBuffer()
 
             rotation -= RotationSpeed
-
             val mMat = Mat4RotZ(rotation)
 
             shaderProgram?.bindUniformMatrix4fv(webGl, "uModelMatrix", mMat.floatArray())
@@ -74,8 +70,10 @@ class WebGlRenderer : BaseWebGlCanvas() {
         }
     }
 
-    override fun render() = with(webGl) {
+    override fun render(): Unit = with(webGl) {
         enable(GL.DEPTH_TEST)
+        clearDepth(1.0f)
+
         compileShaderProgram()
 
         initKeyboardListeners()
@@ -83,25 +81,33 @@ class WebGlRenderer : BaseWebGlCanvas() {
 
         val buffer = WebGlBuffer(
             indices = cube.indices,
-            colors = cube.colors,
             vertices = cube.vertices,
+            textureCoord = cube.textureCoord,
             attributes = arrayOf(
                 WebGlAttribute("aVertexPosition", 3),
-                WebGlAttribute("aColor", 3),
+                WebGlAttribute("aTextureCoord", 2),
             ),
         )
 
         initBuffer(shaderProgram, buffer)
         initViewport(canvasInfo.width, canvasInfo.height)
 
-        draw()
+        loadImageTexture(TextureName, onTextureLoaded = {
+            it?.let {
+                it.useTexture(webGl)
+                val sampler = initUniformLoc(shaderProgram, "uSampler")
+                uniform1i(sampler, 0)
+
+                draw()
+            }
+        })
     }
 
     private fun compileShaderProgram() {
         val shaders = ShaderProgram.loadShaders(
             webGl,
             resourceLoader,
-            shaderName = "cube_shader",
+            shaderName = ShaderProgramName,
         )
 
         shaderProgram.useShaders(webGl, shaders)
@@ -111,5 +117,7 @@ class WebGlRenderer : BaseWebGlCanvas() {
 
         // Constants
         private const val RotationSpeed = 0.02
+        private const val TextureName = "bricks.png"
+        private const val ShaderProgramName = "cube_texture_shader"
     }
 }

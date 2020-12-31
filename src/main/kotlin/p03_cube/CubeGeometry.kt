@@ -1,5 +1,3 @@
-package p03_cube
-
 import base.data.GeometryObject
 
 class CubeGeometry : GeometryObject(

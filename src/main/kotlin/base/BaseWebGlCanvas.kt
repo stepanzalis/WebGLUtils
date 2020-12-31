@@ -23,7 +23,7 @@ abstract class BaseWebGlCanvas(
     private val canvas by lazy { document.getElementById(WebGlCanvasId) as HTMLCanvasElement }
 
     // Override these listeners if you want to use mouse or keyboard events
-    override var mouseListener: ((Double, Double) -> Unit)? = { x, y -> }
+    override var mouseListener: ((Double, Double) -> Unit)? = { _, _ -> }
     override val eventListener: EventListener = EventListener {}
 
     override val mouseEvent = MouseEventInfo()

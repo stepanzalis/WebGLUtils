@@ -3,6 +3,9 @@ package p02_obj
 import base.*
 import base.data.WebGlAttribute
 import base.data.WebGlBuffer
+import base.ext.clearColorBuffer
+import base.ext.initBuffer
+import base.ext.initViewport
 import ext.*
 import kotlinx.browser.document
 import org.khronos.webgl.*

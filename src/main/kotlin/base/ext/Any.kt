@@ -1,4 +1,4 @@
-package ext
+package base.ext
 
 import exceptions.WebGLException
 

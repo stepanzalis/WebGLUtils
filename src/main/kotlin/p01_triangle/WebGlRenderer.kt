@@ -3,6 +3,10 @@ package p01_triangle
 import base.*
 import base.data.WebGlAttribute
 import base.data.WebGlBuffer
+import base.ext.clearColorBuffer
+import base.ext.initBuffer
+import base.ext.initUniformLoc
+import base.ext.initViewport
 import ext.*
 import org.khronos.webgl.*
 import org.khronos.webgl.WebGLRenderingContext as GL

@@ -1,4 +1,4 @@
-package ext
+package base.ext
 
 import base.data.WebGlAttribute
 import base.data.WebGlBuffer
@@ -21,6 +21,12 @@ fun GL.initBuffer(program: WebGLProgram?, buffer: WebGlBuffer): List<WebGLBuffer
         val colorBuffer = initBuffer(this, GL.ELEMENT_ARRAY_BUFFER)
         bufferData(GL.ELEMENT_ARRAY_BUFFER, Float32Array(buffer.colors), GL.STATIC_DRAW)
         bindBuffer(GL.ELEMENT_ARRAY_BUFFER, colorBuffer)
+    }
+
+    buffer.textureCoord?.let {
+        val texBuffer = initBuffer(this)
+        bufferData(GL.ARRAY_BUFFER, Float32Array(buffer.textureCoord), GL.STATIC_DRAW)
+        bindBuffer(GL.ARRAY_BUFFER, texBuffer)
     }
 
     // Bind buffers
@@ -48,6 +54,15 @@ private fun bindAttributes(webGl: GL, program: WebGLProgram?, buffer: WebGlBuffe
     program?.let {
         buffer.attributes.forEach { attribute ->
             bindAttribute(webGl, program, attribute)
+        }
+    } ?: throw AttributeBindException
+}
+
+fun GL.unbindAttributes(program: WebGLProgram?, buffer: WebGlBuffer) {
+    program?.let {
+        buffer.attributes.forEach { attribute ->
+            val attr = getAttribLocation(program, attribute.name)
+            disableVertexAttribArray(attr)
         }
     } ?: throw AttributeBindException
 }
